@@ -1,7 +1,9 @@
-function Rune(name, power, anti) {
-  this.name = name;
-  this.power = power;
-  this.anti = anti;
+class Rune {
+  constructor(name, power, anti) {
+    this.name = name;
+    this.power = power;
+    this.anti = anti;
+  }
 }
 
 let runicTable = new Array();
@@ -97,7 +99,7 @@ const generateRunicWords = length => {
   let numberOfWords = Math.floor(runicTable.length / length);
 
   if (!length) {
-    return 'Input can not be empty';
+    return 'Input cannot be empty';
   } else if (typeof length !== 'number') {
     return `${length} is not a number`;
   } else {
@@ -127,46 +129,48 @@ const isArraySorted = array => {
 };
 
 const checkRunicWord = word => {
+  if (!word) {
+    return 'Input cannot be empty';
+  } else if (typeof word !== 'string') {
+    return `${word} is not a magic word.`;
+  }
+
   let sortedTable = runicTable.sort((a, b) => b.power - a.power);
   let wordArray = word.split('-');
   let runesNames = sortedTable.map(rune => rune.name);
   let runesIndex = wordArray.map(word =>
     runesNames.findIndex(name => name === word)
   );
+  let runeExists = wordArray.every(word => runesNames.indexOf(word) !== -1);
 
-  if (!word) {
-    return 'Input can not be empty';
-  } else if (typeof word !== 'string') {
-    return `${word} is not a magic word.`;
-  }
-
-  if (wordArray.every(word => runesNames.indexOf(word) !== -1)) {
-    let runicWordObject = new Array();
+  if (!runeExists) {
+    return 'This magic word does not exist';
+  } else {
+    let runesContainer = new Array();
 
     for (let i = 0; i < wordArray.length; i++) {
-      runicWordObject.push(sortedTable[runesIndex[i]]);
+      runesContainer.push(sortedTable[runesIndex[i]]);
     }
 
-    let names = runicWordObject.map(word => word.name);
-    let antiNames = runicWordObject.map(word => word.anti);
-    let power = runicWordObject.map(word => word.power);
+    let names = runesContainer.map(word => word.name);
+    let antiNames = runesContainer.map(word => word.anti);
+    let power = runesContainer.map(word => word.power);
+    let noRuneConflict = names.every(name => antiNames.indexOf(name) === -1);
 
-    if (names.every(item => antiNames.indexOf(item) === -1)) {
+    if (!noRuneConflict) {
+      return 'These runes cannot me mixed';
+    } else {
       if (isValuePresentMoreThanOnce(names)) {
         return 'Each rune can be used only once';
       }
-      if (isArraySorted(power)) {
+      if (!isArraySorted(power)) {
+        return 'These runes are not in correct order';
+      } else {
         return {
           Power: power.reduce((a, b) => a + b) - wordArray.length
         };
-      } else {
-        return 'The runes are not in correct order';
       }
-    } else {
-      return 'These runes can not me mixed';
     }
-  } else {
-    return 'This magic word does not exist';
   }
 };
 
