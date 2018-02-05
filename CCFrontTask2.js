@@ -6,9 +6,7 @@ class Rune {
   }
 }
 
-let runicTable = new Array();
-
-runicTable.push(
+const runicTable = [
   new Rune('El', 28, 'Ort'),
   new Rune('Eld', 33, 'Sur'),
   new Rune('Tir', 9, 'Eth'),
@@ -42,12 +40,11 @@ runicTable.push(
   new Rune('Jah', 5, 'Zod'),
   new Rune('Cham', 29, 'Lo'),
   new Rune('Zod', 19, 'Jah')
-);
+];
 
-function makeWord(length) {
+const makeWord = length => {
   let sortedTable = runicTable.sort((a, b) => b.power - a.power);
   let magicWord = new Array();
-  let count = 0;
   let currentRune = 0;
 
   if (length === 1) {
@@ -59,39 +56,30 @@ function makeWord(length) {
     };
   }
 
-  while (count < length) {
-    let noRuneConflict =
-      magicWord.map(rune => rune.name).indexOf(sortedTable[currentRune].anti) <
-      0;
+  while (magicWord.length < length) {
+    let noRuneConflict = !sortedTable[currentRune] || magicWord.map(rune => rune.name)
+                                  .indexOf(sortedTable[currentRune].anti) < 0;
 
-    if (count === 0) {
+    if (magicWord.length === 0) {
       magicWord.push(sortedTable[currentRune]);
       sortedTable.shift();
-      count += 1;
     }
 
-    if (count > 0) {
+    if (magicWord.length > 0) {
       if (noRuneConflict) {
         magicWord.push(sortedTable[currentRune]);
         sortedTable.splice(currentRune, 1);
-        count += 1;
       } else {
         currentRune += 1;
         if (noRuneConflict) {
           magicWord.push(sortedTable[currentRune]);
           sortedTable.splice(currentRune, 1);
-          count += 1;
         }
       }
     }
   }
 
-  return {
-    word: magicWord.map(rune => rune.name).join('-'),
-    power:
-      magicWord.map(rune => rune.power).reduce((a, b) => a + b) -
-      magicWord.map(rune => rune).length
-  };
+  return magicWord;
 }
 
 const generateRunicWords = length => {
@@ -104,8 +92,22 @@ const generateRunicWords = length => {
     return `${length} is not a number`;
   } else {
     for (let i = 0; i < numberOfWords && i < 10; i++) {
-      runicWords.push(makeWord(length));
+      let magicWord = makeWord(length); 
+      if (magicWord.indexOf(undefined) < 0) {
+        runicWords.push(
+          {
+            word: magicWord.map(rune => rune.name).join('-'),
+            power:
+              magicWord.map(rune => rune.power)
+                       .reduce((a, b) => a + b) - magicWord.map(rune => rune).length
+          }
+        );
+      }
     }
+  }
+
+  if (runicWords.length === 0) {
+    return 'Not enough mana! And too many runes.';
   }
 
   return runicWords;
@@ -165,9 +167,7 @@ const checkRunicWord = word => {
       if (!isArraySorted(power)) {
         return 'These runes are not in correct order';
       } else {
-        return {
-          Power: power.reduce((a, b) => a + b) - wordArray.length
-        };
+        return power.reduce((a, b) => a + b) - wordArray.length;      
       }
     }
   }
