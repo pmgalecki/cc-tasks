@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #FFFF99;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            width: 70%;
+            min-width: 210px;
+        }
+
+        li {
+            display: flex;
+            background-color: #EEEEEE;
+            padding: 5px;
+            justify-content: space-between;
+            box-shadow: 1.5px 1.5px 3px #666666;
+        }
+        /* li first span text wrapping */
+
+        li:nth-of-type(odd) span:first-of-type,
+        li:nth-of-type(even) span:first-of-type {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-weight: 100;
+        }
+        /* li last span text wrapping */
+
+        li:nth-of-type(odd) span:last-of-type,
+        li:nth-of-type(even) span:last-of-type {
+            white-space: nowrap;
+            margin-left: 14px;
+        }
+        /* end */
+        /* odd list elements */
+
+        li:nth-of-type(odd) {
+            border: 1px solid #999999;
+            border-radius: 5px 0 0 5px;
+            margin-right: 21px;
+            margin-top: -1px;
+        }
+
+        li:nth-of-type(odd) span:first-of-type {
+            color: #666666;
+        }
+
+        li:nth-of-type(odd) span:last-of-type {
+            color: #000000;
+            font-weight: bold;
+        }
+        /* end */
+        /* even list elements */
+
+        li:nth-of-type(even) {
+            border: 1px solid #999999;
+            border-radius: 0 5px 5px 0;
+            margin-left: 21px;
+            margin-top: -1px;
+        }
+
+        li:nth-of-type(even) span:first-of-type {
+            color: #000000;
+        }
+
+        li:nth-of-type(even) span:last-of-type {
+            color: #666666;
+            font-weight: bold;
+        }
+        /* end */
+        /* outmost elements */
+
+        li:last-of-type:nth-of-type(even) {
+            border-radius: 0 5px 5px 5px;
+        }
+
+        li:last-of-type:nth-of-type(odd) {
+            border-radius: 5px 0 5px 5px;
+        }
+
+        li:first-of-type {
+            border-radius: 5px 5px 0 5px;
+            margin-top: 0;
+        }
+        /* end */
+
+        @media (min-width: 600px) {
+            ul {
+                width: 50%;
+            }
+        }
+
+        @media (min-width: 1500px) {
+            ul {
+                width: 33%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <ul>
+        <li>
+            <span>
+                Short text
+            </span>
+            <span>
+                Is short
+            </span>
+        </li>
+        <li>
+            <span>
+                A little bit longer text
+            </span>
+            <span>
+                Is longer
+            </span>
+        </li>
+        <li>
+            <span>
+                Also a little bit longer
+            </span>
+            <span>
+                Yes it is
+            </span>
+        </li>
+        <li>
+            <span>
+                A long text is here, totally for no reason
+            </span>
+            <span>
+                Is long.
+            </span>
+        </li>
+        <li>
+            <span>
+                A long text is here also, for the same reason
+            </span>
+            <span>
+                Is long too!
+            </span>
+        </li>
+        <li>
+            <span>
+                OK
+            </span>
+            <span>
+                OK
+            </span>
+        </li>
+    </ul>
+</body>
+
+</html>
