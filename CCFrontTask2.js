@@ -111,7 +111,6 @@ const generateRunicWords = length => {
   return runicWords;
 };
 
-// function that checks if elements in array double
 const isValuePresentMoreThanOnce = array => {
   for (let i = 0; i < array.length; i++) {
     if (array.filter(el => el === array[i]).length > 1) {
@@ -119,7 +118,7 @@ const isValuePresentMoreThanOnce = array => {
     }
   }
 };
-// function that checks if array is sorted from strongest to weakest
+
 const isArraySorted = array => {
   return array.every((item, index, items) => {
     if (index === 0 || item <= items[index - 1]) {
