@@ -41,7 +41,10 @@ const runicTable = [
   new Rune('Cham', 29, 'Lo'),
   new Rune('Zod', 19, 'Jah')
 ];
-
+/**
+ * makeWord() returns arrays of runes with given length
+ * and omits the ones that they can't be linked with  
+ */
 const makeWord = length => {
   let sortedTable = runicTable.sort((a, b) => b.power - a.power);
   let magicWord = new Array();
@@ -50,15 +53,14 @@ const makeWord = length => {
   if (length === 1) {
     magicWord.push(sortedTable[currentRune]);
     sortedTable.shift();
-    return {
-      word: magicWord[currentRune].name,
-      power: magicWord[currentRune].power - 1
-    };
+
+    return magicWord;
   }
 
   while (magicWord.length < length) {
-    let noRuneConflict = !sortedTable[currentRune] || magicWord.map(rune => rune.name)
-                                  .indexOf(sortedTable[currentRune].anti) < 0;
+    let noRuneConflict = !sortedTable[currentRune] || 
+                          magicWord.map(rune => rune.name)
+                                   .indexOf(sortedTable[currentRune].anti) < 0;
 
     if (magicWord.length === 0) {
       magicWord.push(sortedTable[currentRune]);
@@ -81,7 +83,12 @@ const makeWord = length => {
 
   return magicWord;
 }
-
+/**
+ * generateRunicWords() returns the array with magic words objects
+ * by calling the makeWord()
+ * it also filters undefined elements that can appear inside the magicWord array
+ * from makeWord() 
+ */
 const generateRunicWords = length => {
   let runicWords = new Array();
   let numberOfWords = Math.floor(runicTable.length / length);
@@ -107,7 +114,7 @@ const generateRunicWords = length => {
   }
 
   if (runicWords.length === 0) {
-    return 'Not enough mana! And too many runes.';
+    return 'Not enough mana! And not enough runes.';
   }
 
   return runicWords;
